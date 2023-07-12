@@ -1,0 +1,86 @@
+﻿@model IPagedList<User>
+
+@using PagedList.Mvc;
+@using PagedList
+
+@{
+    ViewData["Title"] = "QUẢN LÝ THÔNG TIN NGƯỜI DÙNG";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-success">Create New</a>
+</p>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>
+                Họ và tên
+            </th>
+            <th>
+                Ngày sinh
+            </th>
+            <th>
+                Email
+            </th>
+            <th>
+                Số điện thoại
+            </th>
+            <th>
+                Địa chỉ
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null && Model.Any())
+        {
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FullName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DateOfBirth)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Email)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Phone)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Address)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id">
+                            <i class="fas fa-edit" style="color: #44ff00;"></i>
+                        </a>
+                        &nbsp;
+                        <a asp-action="Details" asp-route-id="@item.Id">
+                            <i class="fas fa-info-circle" style="color: #00b3ff;"></i>
+                        </a>
+                        &nbsp;
+                        <a asp-action="Delete" asp-route-id="@item.Id">
+                            <i class="fas fa-trash-alt" style="color: #f10404;"></i>
+                        </a>
+                    </td>
+
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="5">
+                    <div>Users not available in the database</div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<div class="text-center">
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page }), new PagedListRenderOptions { DisplayLinkToFirstPage = true, DisplayLinkToLastPage = true })
+</div>
